@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropType from 'prop-types';
-import { Field } from 'redux-form';
+import { Field, FieldArray } from 'redux-form';
 import { Grid, Row, Col, ButtonToolbar, Button } from 'react-bootstrap';
 
-import { required, email, onlyNumber, phoneNumber } from './validation';
+import InputField from '../../forms/InputField';
+import SelectField from '../../forms/SelectField'
+import RadioGroup from '../../forms/RadioGroup';
+import { required, email } from '../../../utils/validation';
 
-import './AddProfileForm';
-
-
-
+import './AddProfileForm.scss';
 
 class AddProfileForm extends Component {
   static propTypes = {
@@ -28,16 +28,16 @@ class AddProfileForm extends Component {
           <Row>
             <Col xs={6}>
               <Field
-                component={inputWithError}
-                name="firstName"
+                component={InputField}
+                name="name.first"
                 type="text"
                 label="First Name"
                 validate={required} />
             </Col>
             <Col xs={6}>
               <Field
-                name="lastName"
-                component={inputWithError}
+                name="name.last"
+                component={InputField}
                 type="text"
                 label="Last Name"
                 validate={required} />
@@ -48,7 +48,7 @@ class AddProfileForm extends Component {
               <Field
                 className="form-control"
                 name="title"
-                component={inputWithError}
+                component={InputField}
                 type="text"
                 label="Title"
                 validate={required} />
@@ -57,7 +57,7 @@ class AddProfileForm extends Component {
               <Field
                 className="form-control"
                 name="email"
-                component={inputWithError}
+                component={InputField}
                 type="email"
                 label="Email"
                 validate={[required, email]} />
@@ -65,29 +65,10 @@ class AddProfileForm extends Component {
           </Row>
           <Row>
             <Col xs={6}>
-              <div className="form-group">
-                <label>Sex</label>
-                <div>
-                  <label className="radio-inline">
-                    <Field
-                      name="sex"
-                      component={inputWithError}
-                      type="radio"
-                      value="male"
-                      validate={required}
-                    /> Male
-                  </label>
-                  <label className="radio-inline">
-                    <Field
-                      name="sex"
-                      component={inputWithError}
-                      type="radio"
-                      value="female"
-                      validate={required}
-                    /> Female
-                  </label>
-                </div>
-              </div>
+              <Field component={RadioGroup} name="gender" validate={required} options={[
+                  { title: 'Male', value: 'male' },
+                  { title: 'Female', value: 'female' }
+              ]} />
             </Col>
           </Row>
           <Row>
@@ -95,24 +76,18 @@ class AddProfileForm extends Component {
               <Field
                 className="form-control"
                 name="phone"
-                component={inputWithError}
+                component={InputField}
                 type="text"
-                label="Phone"
-                validate={[onlyNumber, phoneNumber]} />
+                label="Phone" />
             </Col>
           </Row>
           <Row>
             <Col xs={6}>
-              <div className="form-group">
-                <label>Chose role</label>
-                <div>
-                  <Field name="roles" component={inputWithError} type="select" validate={required}>
-                    {roles.map(role => (
-                      <option key={role.key} value={role.value}>{role.title}</option>
-                    ))}
-                  </Field>
-                </div>
-              </div>
+              <Field name="roles" component={SelectField} label="Chose role">
+                {roles.map(role => (
+                  <option key={role.key} value={role.value}>{role.title}</option>
+                ))}
+              </Field>
             </Col>
           </Row>
           <Row>
