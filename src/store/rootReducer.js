@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
+import { reducer as reduxFormReducer } from 'redux-form';
 
-import AddProfileReducer from '../components/Profile/AddProfile/AddProfileReducer';
 import { profileReducer } from '../components/Profile/re-ducks';
 
 const rootReducer = combineReducers({
-  ...AddProfileReducer,
+  form: reduxFormReducer,
   profiles: profileReducer
 });
 

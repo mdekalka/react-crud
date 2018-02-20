@@ -6,6 +6,7 @@ import { Grid, Row, Col, ButtonToolbar, Button } from 'react-bootstrap';
 import InputField from '../../common/forms/InputField';
 import SelectObject from '../../common/forms/SelectObject'
 import RadioGroup from '../../common/forms/RadioGroup';
+import ImageField from '../../common/forms/ImageField'
 import { required, email } from '../../../utils/validation';
 
 import './AddProfileForm.scss';
@@ -65,10 +66,13 @@ class AddProfileForm extends Component {
           </Row>
           <Row>
             <Col xs={6}>
-              <Field component={RadioGroup} name="gender" validate={required} options={[
+              <Field component={RadioGroup} name="gender" label="Gender" validate={required} options={[
                   { title: 'Male', value: 'male' },
                   { title: 'Female', value: 'female' }
               ]} />
+            </Col>
+            <Col xs={6}>
+              <Field component={ImageField} name="picture.large" label="Select avatar" />
             </Col>
           </Row>
           <Row>
