@@ -3,22 +3,21 @@ import { reduxForm } from 'redux-form';
 import cuid from 'cuid';
 
 import AddProfileForm from '../../Profile/AddProfileForm/AddProfileForm';
+import profileModel from '../profileModel';
 import { ROLES } from '../../../constants/constants';
 
 const AddProfileFormStore = reduxForm({
   form: 'add-profile',
-  initialValues: {
-    roles: [ROLES[0]]
-  }
+  initialValues: { ...profileModel }
 })(AddProfileForm)
 
 class AddProfile extends Component {
   onAddProfile = (profile) => {
     const newProfile = {
       ...profile,
-      id: cuid(),
-      roles: [ROLES.find(role => role.value === profile.roles)]
-    }
+      registered: new Date(),
+      id: cuid()
+    };
   }
   
   render() {

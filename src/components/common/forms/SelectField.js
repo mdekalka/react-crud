@@ -1,10 +1,10 @@
 import React from 'react';
 
-const SelectField = ({ input, label, type, meta: { touched, error }, children }) => (
+const SelectField = ({ input, multiple, label, type, meta: { touched, error }, children }) => (
   <div className={`form-group ${(touched && error) ? 'has-error': ''}`}>
     <label>{label}</label>
     <div>
-      <select {...input}>
+      <select multiple={multiple ? true : false} {...input}>
         {children}
       </select>
       {touched && error && <label className="control-label">{error}</label>}

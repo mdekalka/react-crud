@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { URL } from '../../utils/url';
+import { buildQueryOptions } from './profileUtils';
 
 const successCallback = (response => response.data);
 const errCallback = (err => err.message);
@@ -23,9 +24,14 @@ export const updateProfileById = ({ id, profile }) => {
     .catch(errCallback)
 }
 
-export const getProfiles = () => {
-  return axios.get(URL.profiles)
-    .then(successCallback)
+export const getProfiles = (options) => {
+  const opt = buildQueryOptions(options);
+
+  return axios.get(`${URL.profiles}${opt}`)
+    .then(response => ({
+      data: response.data,
+      total: parseFloat(response.headers['x-total-count'])
+    }))
     .catch(errCallback)
 }
 

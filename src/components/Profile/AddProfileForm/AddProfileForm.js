@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import PropType from 'prop-types';
-import { Field, FieldArray } from 'redux-form';
+import PropTypes from 'prop-types';
+import { Field } from 'redux-form';
 import { Grid, Row, Col, ButtonToolbar, Button } from 'react-bootstrap';
 
-import InputField from '../../forms/InputField';
-import SelectField from '../../forms/SelectField'
-import RadioGroup from '../../forms/RadioGroup';
+import InputField from '../../common/forms/InputField';
+import SelectObject from '../../common/forms/SelectObject'
+import RadioGroup from '../../common/forms/RadioGroup';
 import { required, email } from '../../../utils/validation';
 
 import './AddProfileForm.scss';
 
 class AddProfileForm extends Component {
   static propTypes = {
-    roles: PropType.array
+    roles: PropTypes.array
   }
 
   static defaultProps = {
     roles: []
   }
-
+  
   render() {
     const { handleSubmit, pristine, reset, submitting, roles } = this.props;
 
@@ -83,11 +83,7 @@ class AddProfileForm extends Component {
           </Row>
           <Row>
             <Col xs={6}>
-              <Field name="roles" component={SelectField} label="Chose role">
-                {roles.map(role => (
-                  <option key={role.key} value={role.value}>{role.title}</option>
-                ))}
-              </Field>
+              <Field name="roles" multiple options={roles} component={SelectObject} type="select-multiple" label="Chose role" />
             </Col>
           </Row>
           <Row>

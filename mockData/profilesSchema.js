@@ -2,8 +2,8 @@ const profileSchema = require('./profileSchema')
 
 const profilesSchema = {
   type: 'array',
-  minItems: 70,
-  maxItems: 120,
+  minItems: 60,
+  maxItems: 80,
   items: profileSchema
 }
 
