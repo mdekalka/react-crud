@@ -5,9 +5,9 @@ export const fetchProfileStart = () => ({
   type: types.FETCHING_PROFILE_START
 })
 
-export const fetchProfileSuccess = (profiles) => ({
+export const fetchProfileSuccess = (profile) => ({
   type: types.FETCHING_PROFILE_SUCCESS,
-  data: profiles
+  data: profile
 })
 
 export const fetchProfileFailed = (error) => ({
@@ -15,26 +15,29 @@ export const fetchProfileFailed = (error) => ({
   error
 })
 
-export const fetchProfile = () => (dispatch) => {
+export const fetchProfile = (id) => (dispatch) => {
   dispatch(fetchProfileStart());
 
-  return getProfileById()
-    .then(profiles => dispatch(fetchProfileSuccess(profiles)))
+  return getProfileById(id)
+    .then(profile => {
+      debugger
+      dispatch(fetchProfileSuccess(profile))
+    })
     .catch(err => dispatch(fetchProfileFailed(err)));
 }
 
 export const fetchProfilesStart = () => ({
-  type: types.FETCHING_PROFILE_START
+  type: types.FETCHING_PROFILES_START
 })
 
 export const fetchProfilesSuccess = ({ data, total }) => ({
-  type: types.FETCHING_PROFILE_SUCCESS,
+  type: types.FETCHING_PROFILES_SUCCESS,
   data,
   total
 })
 
 export const fetchProfilesFailed = (error) => ({
-  type: types.FETCHING_PROFILE_FAILED,
+  type: types.FETCHING_PROFILES_FAILED,
   error
 })
 
@@ -50,9 +53,9 @@ export const addProfileStart = () => ({
   type: types.ADD_PROFILE_START
 })
 
-export const addProfileSuccess = (profiles) => ({
+export const addProfileSuccess = ({ id }) => ({
   type: types.ADD_PROFILE_SUCCESS,
-  data: profiles
+  id
 })
 
 export const addProfileFailed = (error) => ({
@@ -60,11 +63,11 @@ export const addProfileFailed = (error) => ({
   error
 })
 
-export const addProfile = () => (dispatch) => {
+export const addProfile = (profile) => (dispatch) => {
   dispatch(addProfileStart());
 
-  return addNewProfile()
-    .then(profiles => dispatch(addProfileSuccess(profiles)))
+  return addNewProfile(profile)
+    .then(profileInfo => dispatch(addProfileSuccess(profileInfo)))
     .catch(err => dispatch(addProfileFailed(err)));
 }
 
@@ -94,9 +97,9 @@ export const removeProfileStart = () => ({
   type: types.REMOVE_PROFILE_START
 })
 
-export const removeProfileSuccess = (profiles) => ({
+export const removeProfileSuccess = (id) => ({
   type: types.REMOVE_PROFILE_SUCCESS,
-  data: profiles
+  id
 })
 
 export const removeProfileFailed = (error) => ({
@@ -104,11 +107,11 @@ export const removeProfileFailed = (error) => ({
   error
 })
 
-export const removeProfile = () => (dispatch) => {
+export const removeProfile = (id) => (dispatch) => {
   dispatch(removeProfileStart());
 
-  return removeProfileById()
-    .then(profiles => dispatch(removeProfileSuccess(profiles)))
+  return removeProfileById(id)
+    .then(profiles => dispatch(removeProfileSuccess(id)))
     .catch(err => dispatch(removeProfileFailed(err)));
 }
 

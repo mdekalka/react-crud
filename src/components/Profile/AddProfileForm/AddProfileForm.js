@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Grid, Row, Col, ButtonToolbar, Button } from 'react-bootstrap';
+import { Grid, Row, Col, ButtonToolbar, Button, ButtonGroup } from 'react-bootstrap';
 
 import InputField from '../../common/forms/InputField';
-import SelectObject from '../../common/forms/SelectObject'
+import SelectObject from '../../common/forms/SelectObject';
 import RadioGroup from '../../common/forms/RadioGroup';
-import ImageField from '../../common/forms/ImageField'
+import ImageField from '../../common/forms/ImageField';
+import ImagePreview from '../../common/ImagePreview/ImagePreview';
+
 import { required, email } from '../../../utils/validation';
 
 import './AddProfileForm.scss';
@@ -19,9 +21,9 @@ class AddProfileForm extends Component {
   static defaultProps = {
     roles: []
   }
-  
+
   render() {
-    const { handleSubmit, pristine, reset, submitting, roles } = this.props;
+    const { handleSubmit, pristine, reset, submitting, roles, avatar, errorMessage } = this.props;
 
     return (
       <Grid>
@@ -73,6 +75,7 @@ class AddProfileForm extends Component {
             </Col>
             <Col xs={6}>
               <Field component={ImageField} name="picture.large" label="Select avatar" />
+              {!!avatar && <ImagePreview src={avatar} />}
             </Col>
           </Row>
           <Row>
@@ -93,8 +96,11 @@ class AddProfileForm extends Component {
           <Row>
             <Col xs={6}>
               <ButtonToolbar>
-                <Button type="submit" disabled={pristine || submitting} bsStyle="success">Success</Button>
-                <Button disabled={pristine || submitting} onClick={reset}>Reset</Button>
+                <ButtonGroup>
+                  <Button type="submit" disabled={pristine || submitting} bsStyle="success">Success</Button>
+                  <Button disabled={pristine || submitting} onClick={reset}>Reset</Button>
+                </ButtonGroup>
+                {errorMessage && <span className="bg-danger">{errorMessage}</span>}
               </ButtonToolbar>
             </Col>
           </Row>

@@ -18,6 +18,13 @@ export const buildQueryOptions = (options) => {
   return queryOptions;
 }
 
+export const formatSorting = (sorting) => {
+  return {
+    sort: sorting.map(sort => sort.id).join(','),
+    order: sorting.map(sort => sort.desc ? 'desc': 'asc').join(',')
+  }
+}
+
 export const tableHeaders = [
   {
     Header: 'Name',
@@ -69,3 +76,11 @@ export const tableHeaders = [
     ]
   }
 ];
+
+export const createTableHeaders = (extendWith) => {
+  if (!extendWith) {
+    return [...tableHeaders];
+  }
+
+  return [ ...tableHeaders, extendWith];
+}

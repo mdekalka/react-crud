@@ -6,7 +6,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import ProfilesTable from '../ProfilesTable/ProfilesTable';
 
 import { profileActions } from '../re-ducks/';
-import { tableHeaders } from '../profileUtils'
+import { createTableHeaders, formatSorting } from '../profileUtils';
 
 export class ProfileView extends Component {
   state = {
@@ -16,6 +16,54 @@ export class ProfileView extends Component {
       sort: '',
       order: ''
     }
+  }
+
+  headers = []
+
+  componentDidMount() {
+    this.createHeaders();
+  }
+
+  createHeaders() {
+    this.headers = createTableHeaders({
+      Header: 'Format',
+      columns: [
+        {
+          Header: 'Edit',
+          sortable: false,
+          filterable: false,
+          Cell: row => (
+            <div className="text-center">
+              <button onClick={() => this.onEditHandle(row)}>
+                <i className="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+            </div>
+          )
+        },
+        {
+          Header: 'Remove',
+          sortable: false,
+          filterable: false,
+          Cell: row => (
+            <div className="text-center">
+              <button onClick={() => this.onRemoveHandle(row)}>
+                <i className="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          )
+        }
+      ]
+    });
+  }
+
+  onEditHandle = ({ original }) => {
+    this.props.history.push(`/edit-profile/${original.id}`)
+  }
+
+  onRemoveHandle = ({ original }) => {
+    this.props.profileActions.removeProfile(original.id).then(_ => {
+      this.props.profileActions.fetchProfiles(this.state.paginate);
+    });
   }
 
   pageOptions = {
@@ -29,22 +77,19 @@ export class ProfileView extends Component {
       ...this.formatSort(sorted)
     };
 
-    this.props.profileActions.fetchProfiles(updatedPaginate);
-
-    this.setState(({ paginate }) => ({
-      updatedPaginate
-    }));
+    this.props.profileActions.fetchProfiles(updatedPaginate).then(_ => {
+      this.setState({
+        paginate: updatedPaginate
+      });
+    });
   }
 
   getTotalPages(total, limit) {
-    return Math.round(total / limit)
+    return Math.ceil(total / limit)
   }
 
   formatSort(sorting) {
-    return {
-      sort: sorting.map(sort => sort.id).join(','),
-      order: sorting.map(sort => sort.desc ? 'desc': 'asc').join(',')
-    }
+    return formatSorting(sorting);
   }
 
   render() {
@@ -56,7 +101,7 @@ export class ProfileView extends Component {
           <Col>
             <ProfilesTable
               manual
-              headers={tableHeaders}
+              headers={this.headers}
               loading={this.props.isFetching}
               pages={pageSize}
               data={this.props.data}

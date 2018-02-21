@@ -4,7 +4,7 @@ import { URL } from '../../utils/url';
 import { buildQueryOptions } from './profileUtils';
 
 const successCallback = (response => response.data);
-const errCallback = (err => err.message);
+const errCallback = (err => Promise.reject(err.message));
 
 export const addProfile = (profile) => {
   return axios.post(URL.profiles, profile)

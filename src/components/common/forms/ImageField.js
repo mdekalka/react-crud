@@ -26,10 +26,15 @@ class ImageField extends Component {
   }
 
   render() {
+    const { input } = this.props;
+    // Force push to re-render, cause new key is provided, issue with type["file"]
+    // https://github.com/erikras/redux-form/issues/769#issuecomment-215411743
+    const fileInputKey = input.value ? input.value.name : +new Date();
+
     return (
       <div className="form-group image-upload">
         <label>{this.props.label}</label>
-        <input className="input-file form-control" type="file" accept='.jpg, .png, .jpeg' onChange={this.onChange} />
+        <input className="input-file form-control" key={fileInputKey} type="file" accept='.jpg, .png, .jpeg' onChange={this.onChange} />
       </div>
     )
   }
