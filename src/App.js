@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { Grid, Row } from 'react-bootstrap';
 import './App.scss';
 
 import NavigationMenu from './components/NavigationMenu/NavigationMenu';
@@ -10,14 +11,16 @@ import ProfileView from './components/Profile/ProfileView/ProfileView';
 class App extends Component {
   render() {
     return (
-      <Fragment>
-        <NavigationMenu />
-        <Switch>
-            <Route exact path='/' component={AddProfile}/>
-            <Route path='/profile-view' component={ProfileView}/>
-            <Route path='/edit-profile/:id' component={EditProfile}/>
-        </Switch>
-      </Fragment>
+      <Grid>
+        <Row>
+          <NavigationMenu />
+          <Switch>
+              <Route exact path='/' component={AddProfile}/>
+              <Route path='/profile-view' component={ProfileView}/>
+              <Route path='/edit-profile/:id' component={EditProfile}/>
+          </Switch>
+        </Row>
+      </Grid>
     );
   }
 }

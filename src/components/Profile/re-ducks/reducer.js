@@ -15,7 +15,7 @@ const handleError = (state, action) => {
   return { ...state, isFetching: false, errorMessage: action.error };
 }
 
-const filterReducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.FETCHING_PROFILES_START:
     case types.ADD_PROFILE_START:
@@ -60,4 +60,4 @@ const filterReducer = (state = initialState, action) => {
   }
 };
 
-export default filterReducer;
+export default reducer;
