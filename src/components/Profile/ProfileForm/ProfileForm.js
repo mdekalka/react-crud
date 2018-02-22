@@ -16,18 +16,18 @@ import './ProfileForm.scss';
 class ProfileForm extends Component {
   static propTypes = {
     roles: PropTypes.array,
-    error: PropTypes.string,
+    errorMessage: PropTypes.string,
     avatar: PropTypes.string
   }
 
   static defaultProps = {
     roles: [],
-    error: '',
+    errorMessage: '',
     avatar: null
   }
 
   render() {
-    const { handleSubmit, pristine, reset, submitting, roles, avatar, error } = this.props;
+    const { handleSubmit, pristine, reset, submitting, roles, avatar, errorMessage } = this.props;
 
     return (
       <Grid>
@@ -104,7 +104,7 @@ class ProfileForm extends Component {
                   <Button type="submit" disabled={pristine || submitting} bsStyle="success">Success</Button>
                   <Button disabled={pristine || submitting} onClick={reset}>Reset</Button>
                 </ButtonGroup>
-                {error && <span className="bg-danger">{error}</span>}
+                {errorMessage && <span className="bg-danger">{errorMessage}</span>}
               </ButtonToolbar>
             </Col>
           </Row>

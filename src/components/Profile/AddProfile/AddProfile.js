@@ -39,7 +39,7 @@ class AddProfile extends Component {
   render() {
     return (
       <div>
-        <AddProfileForm roles={ROLES} onSubmit={this.onAddProfile} error={this.props.errorMessage} />
+        <AddProfileForm roles={ROLES} onSubmit={this.onAddProfile} errorMessage={this.props.errorMessage} />
       </div>
     )
   }
