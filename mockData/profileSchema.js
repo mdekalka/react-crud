@@ -83,12 +83,12 @@ const profileSchema = {
         chance: {
           pickone: [
             [
-              { key: 1, name: 'UI Design' },
-              { key: 2, name: 'UX Design' },
-              { key: 3, name: 'Frontend' },
-              { key: 4, name: 'Backend' },
-              { key: 5, name: 'Fullstack' },
-              { key: 6, name: 'Manager' }
+              { key: 1, title: 'UI Design', value: 'ui' },
+              { key: 2, title: 'UX Design', value: 'ux' },
+              { key: 3, title: 'Frontend', value: 'fe' },
+              { key: 4, title: 'Backend', value: 'be' },
+              { key: 5, title: 'Fullstack', value: 'fs' },
+              { key: 6, title: 'Manager', value: 'man' }
             ]
           ]
         }

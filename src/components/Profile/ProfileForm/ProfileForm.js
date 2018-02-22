@@ -11,19 +11,23 @@ import ImagePreview from '../../common/ImagePreview/ImagePreview';
 
 import { required, email } from '../../../utils/validation';
 
-import './AddProfileForm.scss';
+import './ProfileForm.scss';
 
-class AddProfileForm extends Component {
+class ProfileForm extends Component {
   static propTypes = {
-    roles: PropTypes.array
+    roles: PropTypes.array,
+    error: PropTypes.string,
+    avatar: PropTypes.string
   }
 
   static defaultProps = {
-    roles: []
+    roles: [],
+    error: '',
+    avatar: null
   }
 
   render() {
-    const { handleSubmit, pristine, reset, submitting, roles, avatar, errorMessage } = this.props;
+    const { handleSubmit, pristine, reset, submitting, roles, avatar, error } = this.props;
 
     return (
       <Grid>
@@ -100,7 +104,7 @@ class AddProfileForm extends Component {
                   <Button type="submit" disabled={pristine || submitting} bsStyle="success">Success</Button>
                   <Button disabled={pristine || submitting} onClick={reset}>Reset</Button>
                 </ButtonGroup>
-                {errorMessage && <span className="bg-danger">{errorMessage}</span>}
+                {error && <span className="bg-danger">{error}</span>}
               </ButtonToolbar>
             </Col>
           </Row>
@@ -110,4 +114,4 @@ class AddProfileForm extends Component {
   }
 }
 
-export default AddProfileForm;
+export default ProfileForm;

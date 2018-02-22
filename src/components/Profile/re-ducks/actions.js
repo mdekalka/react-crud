@@ -19,10 +19,7 @@ export const fetchProfile = (id) => (dispatch) => {
   dispatch(fetchProfileStart());
 
   return getProfileById(id)
-    .then(profile => {
-      debugger
-      dispatch(fetchProfileSuccess(profile))
-    })
+    .then(profile => dispatch(fetchProfileSuccess(profile)))
     .catch(err => dispatch(fetchProfileFailed(err)));
 }
 
@@ -85,11 +82,11 @@ export const updateProfileFailed = (error) => ({
   error
 })
 
-export const updateProfile = () => (dispatch) => {
+export const updateProfile = (id, profile) => (dispatch) => {
   dispatch(updateProfileStart());
 
-  return updateProfileById()
-    .then(profiles => dispatch(updateProfileSuccess(profiles)))
+  return updateProfileById(id, profile)
+    .then(profile => dispatch(updateProfileSuccess(profile)))
     .catch(err => dispatch(updateProfileFailed(err)));
 }
 

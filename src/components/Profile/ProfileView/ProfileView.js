@@ -127,6 +127,4 @@ const mapDispatchToProps = (dispatch) => ({
   profileActions: bindActionCreators(profileActions, dispatch)
 });
 
-ProfileView = connect(mapStateToProps, mapDispatchToProps)(ProfileView);
-
-export default ProfileView;
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);

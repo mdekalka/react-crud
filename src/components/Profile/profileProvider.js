@@ -18,7 +18,7 @@ export const removeProfileById = (id) => {
     .catch(errCallback)
 }
 
-export const updateProfileById = ({ id, profile }) => {
+export const updateProfileById = (id, profile) => {
   return axios.patch(`${URL.profiles}/${id}`, profile)
     .then(successCallback)
     .catch(errCallback)

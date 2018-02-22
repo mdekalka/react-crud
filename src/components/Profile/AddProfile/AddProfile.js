@@ -4,24 +4,20 @@ import { bindActionCreators } from 'redux';
 import { reduxForm, formValueSelector, reset } from 'redux-form';
 import cuid from 'cuid';
 
-import AddProfileForm from '../../Profile/AddProfileForm/AddProfileForm';
+import ProfileForm from '../../Profile/ProfileForm/ProfileForm';
 
 import { profileActions } from '../re-ducks';
-import profileModel from '../profileModel';
 import { ROLES } from '../../../constants/constants';
 
 const ADD_PROFILE_FORM_NAME = 'add-profile';
+let AddProfileForm = reduxForm({
+  form: ADD_PROFILE_FORM_NAME
+})(ProfileForm);
+const selector = formValueSelector(ADD_PROFILE_FORM_NAME);
 
-let AddProfileFormStore = reduxForm({
-  form: ADD_PROFILE_FORM_NAME,
-  initialValues: { ...profileModel }
-})(AddProfileForm);
-const selector = formValueSelector(ADD_PROFILE_FORM_NAME)
-
-AddProfileFormStore = connect(state => ({
-  errorMessage: state.profiles.errorMessage,
+AddProfileForm = connect(state => ({
   avatar: selector(state, 'picture.large')
-}))(AddProfileFormStore)
+}))(AddProfileForm);
 
 class AddProfile extends Component {
   onAddProfile = (profile) => {
@@ -37,13 +33,13 @@ class AddProfile extends Component {
       }
 
       this.props.dispatch(reset(ADD_PROFILE_FORM_NAME));
-    })
+    });
   }
   
   render() {
     return (
       <div>
-        <AddProfileFormStore roles={ROLES} onSubmit={this.onAddProfile} />
+        <AddProfileForm roles={ROLES} onSubmit={this.onAddProfile} error={this.props.errorMessage} />
       </div>
     )
   }
@@ -51,7 +47,7 @@ class AddProfile extends Component {
 
 const mapStateToProps = (state) => ({
   errorMessage: state.profiles.errorMessage
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
   addProfile: bindActionCreators(profileActions.addProfile, dispatch),

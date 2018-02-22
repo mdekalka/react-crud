@@ -12,11 +12,16 @@ const parse = (event, multiple) => {
   return JSON.parse(event.target.value);
 }
 
-const SelectObject = ({ input, multiple, options, label, meta: { touched, error }, ...rest }) => (
-  <div className={`form-group ${(touched && error) ? 'has-error': ''}`}>
+const SelectObject = ({ input, multiple, options, label, meta: { touched, error }, ...rest }) => {
+  const val = Array.isArray(input.value) ? input.value.map(JSON.stringify) : JSON.stringify(input.value);
+
+  return (
+    <div className={`form-group ${(touched && error) ? 'has-error': ''}`}>
     <label>{label}</label>
     <div>
-      <select 
+      <select
+        value={val}
+        size={options.length.toString()}
         multiple={multiple ? true : false}
         onBlur={event => input.onBlur(parse(event, multiple))}
         onChange={event => input.onBlur(parse(event, multiple))}
@@ -28,6 +33,8 @@ const SelectObject = ({ input, multiple, options, label, meta: { touched, error 
       {touched && error && <label className="control-label">{error}</label>}
     </div>
   </div>
-)
+  )
+
+}
 
 export default SelectObject;
