@@ -1,64 +1,41 @@
+import { createActions } from 'redux-actions';
+
 import types from './types';
 import { getProfileById, getProfiles, updateProfileById, removeProfileById, addProfile as addNewProfile } from '../profileProvider';
 
-export const fetchProfileStart = () => ({
-  type: types.FETCHING_PROFILE_START
-})
-
-export const fetchProfileSuccess = (profile) => ({
-  type: types.FETCHING_PROFILE_SUCCESS,
-  data: profile
-})
-
-export const fetchProfileFailed = (error) => ({
-  type: types.FETCHING_PROFILE_FAILED,
-  error
-})
+const { fetchingProfileStart, fetchingProfileSuccess, fetchingProfileFailed } = createActions({
+  [types.FETCHING_PROFILE_START]: null,
+  [types.FETCHING_PROFILE_SUCCESS]: profile => ({ profile }),
+  [types.FETCHING_PROFILE_FAILED]: error => ({ error }),
+});
 
 export const fetchProfile = (id) => (dispatch) => {
-  dispatch(fetchProfileStart());
+  dispatch(fetchingProfileStart());
 
   return getProfileById(id)
-    .then(profile => dispatch(fetchProfileSuccess(profile)))
-    .catch(err => dispatch(fetchProfileFailed(err)));
+    .then(profile => dispatch(fetchingProfileSuccess(profile)))
+    .catch(err => dispatch(fetchingProfileFailed(err)));
 }
 
-export const fetchProfilesStart = () => ({
-  type: types.FETCHING_PROFILES_START
-})
-
-export const fetchProfilesSuccess = ({ data, total }) => ({
-  type: types.FETCHING_PROFILES_SUCCESS,
-  data,
-  total
-})
-
-export const fetchProfilesFailed = (error) => ({
-  type: types.FETCHING_PROFILES_FAILED,
-  error
-})
+const { fetchingProfilesStart, fetchingProfilesSuccess, fetchingProfilesFailed } = createActions({
+  [types.FETCHING_PROFILES_START]: null,
+  [types.FETCHING_PROFILES_SUCCESS]: ({ data, total }) => ({ data, total }),
+  [types.FETCHING_PROFILES_FAILED]: error => ({ error }),
+});
 
 export const fetchProfiles = (options) => (dispatch) => {
-  dispatch(fetchProfilesStart());
+  dispatch(fetchingProfilesStart());
 
   return getProfiles(options)
-    .then(profiles => dispatch(fetchProfilesSuccess(profiles)))
-    .catch(err => dispatch(fetchProfilesFailed(err)));
+    .then(profiles => dispatch(fetchingProfilesSuccess(profiles)))
+    .catch(err => dispatch(fetchingProfilesFailed(err)));
 }
 
-export const addProfileStart = () => ({
-  type: types.ADD_PROFILE_START
-})
-
-export const addProfileSuccess = ({ id }) => ({
-  type: types.ADD_PROFILE_SUCCESS,
-  id
-})
-
-export const addProfileFailed = (error) => ({
-  type: types.ADD_PROFILE_FAILED,
-  error
-})
+const { addProfileStart, addProfileSuccess, addProfileFailed } = createActions({
+  [types.ADD_PROFILE_START]: null,
+  [types.ADD_PROFILE_SUCCESS]: ({ id })=> ({ id }),
+  [types.ADD_PROFILE_FAILED]: error => ({ error }),
+});
 
 export const addProfile = (profile) => (dispatch) => {
   dispatch(addProfileStart());
@@ -68,19 +45,11 @@ export const addProfile = (profile) => (dispatch) => {
     .catch(err => dispatch(addProfileFailed(err)));
 }
 
-export const updateProfileStart = () => ({
-  type: types.UPDATE_PROFILE_START
-})
-
-export const updateProfileSuccess = (profiles) => ({
-  type: types.UPDATE_PROFILE_SUCCESS,
-  data: profiles
-})
-
-export const updateProfileFailed = (error) => ({
-  type: types.UPDATE_PROFILE_FAILED,
-  error
-})
+const { updateProfileStart, updateProfileSuccess, updateProfileFailed } = createActions({
+  [types.UPDATE_PROFILE_START]: null,
+  [types.UPDATE_PROFILE_SUCCESS]: data => ({ data }),
+  [types.UPDATE_PROFILE_FAILED]: error => ({ error }),
+});
 
 export const updateProfile = (id, profile) => (dispatch) => {
   dispatch(updateProfileStart());
@@ -90,19 +59,11 @@ export const updateProfile = (id, profile) => (dispatch) => {
     .catch(err => dispatch(updateProfileFailed(err)));
 }
 
-export const removeProfileStart = () => ({
-  type: types.REMOVE_PROFILE_START
-})
-
-export const removeProfileSuccess = (id) => ({
-  type: types.REMOVE_PROFILE_SUCCESS,
-  id
-})
-
-export const removeProfileFailed = (error) => ({
-  type: types.REMOVE_PROFILE_FAILED,
-  error
-})
+const { removeProfileStart, removeProfileSuccess, removeProfileFailed } = createActions({
+  [types.REMOVE_PROFILE_START]: null,
+  [types.REMOVE_PROFILE_SUCCESS]: id => ({ id }),
+  [types.REMOVE_PROFILE_FAILED]: error => ({ error }),
+});
 
 export const removeProfile = (id) => (dispatch) => {
   dispatch(removeProfileStart());
