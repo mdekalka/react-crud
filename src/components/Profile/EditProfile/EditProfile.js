@@ -34,7 +34,10 @@ export class EditProfile extends Component {
   render() {
     return (
       <div>
-        <EditProfileForm roles={ROLES} onSubmit={this.onUpdateProfile} error={this.props.errorMessage} />
+        {this.props.errorMessage
+          ? <div className="text-center">Profile can't be loaded</div>
+          : <EditProfileForm roles={ROLES} onSubmit={this.onUpdateProfile} error={this.props.errorMessage} />
+        }
       </div>
     )
   }
