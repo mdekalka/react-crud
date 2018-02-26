@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
+import { extendObservable, action } from 'mobx';
+import { inject, observer } from 'mobx-react';
 
 import ProfilesTable from '../ProfilesTable/ProfilesTable';
 
-import { profileActions } from '../re-ducks/';
 import { createTableHeaders, formatSorting } from '../profileUtils';
 
+@inject('store')
+@observer
 export class ProfileView extends Component {
-  state = {
-    paginate: {
+
+  constructor() {
+    super();
+
+    this.paginate = extendObservable(this, {
       page: 1,
       limit: 15,
       sort: '',
       order: ''
-    }
+    });
   }
 
   headers = []
+
+  pageOptions = {
+    showPageSizeOptions: false
+  }
 
   componentDidMount() {
     this.createHeaders();
@@ -61,31 +69,25 @@ export class ProfileView extends Component {
   }
 
   onRemoveHandle = ({ original }) => {
-    this.props.profileActions.removeProfile(original.id).then(_ => {
-      this.props.profileActions.fetchProfiles(this.state.paginate);
+    this.props.store.profilesStore.removeProfile(original.id).then(_ => {
+      this.props.store.profilesStore.fetchProfiles(this.paginate);
     });
   }
 
-  pageOptions = {
-    showPageSizeOptions: false
-  }
-
-  fetchData = ({ page, sorted }) => {
+  @action fetchData = ({ page, sorted }) => {
     const updatedPaginate = {
-      ...this.state.paginate,
+      limit: this.paginate.limit,
       page: ++page,
       ...this.formatSort(sorted)
-    };
+    }
 
-    this.props.profileActions.fetchProfiles(updatedPaginate).then(_ => {
-      this.setState({
-        paginate: updatedPaginate
-      });
-    });
+    this.props.store.profilesStore.fetchProfiles(updatedPaginate).then(action(_ => {
+      this.paginate = extendObservable(this, updatedPaginate);
+    }));
   }
 
   getTotalPages(total, limit) {
-    return Math.ceil(total / limit)
+    return Math.ceil(total / limit);
   }
 
   formatSort(sorting) {
@@ -93,7 +95,8 @@ export class ProfileView extends Component {
   }
 
   render() {
-    const pageSize = this.getTotalPages(this.props.total, this.state.paginate.limit);
+    const { profilesStore } = this.props.store;
+    const pageSize = this.getTotalPages(profilesStore.total, this.paginate.limit);
 
     return (
       <Grid>
@@ -102,10 +105,11 @@ export class ProfileView extends Component {
             <ProfilesTable
               manual
               headers={this.headers}
-              loading={this.props.isFetching}
+              loading={profilesStore.isFetching}
               pages={pageSize}
-              data={this.props.data}
-              pageSize={this.state.paginate.limit}
+              // https://mobx.js.org/refguide/array.html
+              data={profilesStore.data.slice()}
+              pageSize={this.paginate.limit}
               pageOptions={this.pageOptions}
               onFetchData={this.fetchData}
               className={'-striped -highlight'} />
@@ -116,15 +120,4 @@ export class ProfileView extends Component {
   }
 };
 
-const mapStateToProps = (state) => ({
-  data: state.profiles.data,
-  total: state.profiles.total,
-  isFetching: state.profiles.isFetching,
-  errorMessage: state.profiles.errorMessage
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  profileActions: bindActionCreators(profileActions, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);
+export default ProfileView;

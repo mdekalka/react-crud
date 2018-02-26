@@ -9,4 +9,3 @@ export const onlyNumber = value => isNaN(Number(value)) ? 'Must be a number' : u
 export const phoneNumber = value => value && !/^(0|[1-9][0-9]{9})$/i.test(value)
   ? 'Invalid phone number, must be 10 digits'
   : undefined;
-

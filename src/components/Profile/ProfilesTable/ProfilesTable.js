@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import { observer } from "mobx-react"
 
 import './ProfilesTable.scss';
 
+@observer
 class ProfilesTable extends Component {
   static propTypes = {
     data: PropTypes.array,

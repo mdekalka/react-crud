@@ -1,13 +1,14 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
-const InputField = ({ input, label, type, meta: { touched, error, warning } }) => (
-  <div className={`form-group ${(touched && error) ? 'has-error': ''}`}>
-    <label>{label}</label>
+const InputField = observer(({ field, type = 'text', placeholder = null }) => (
+  <div className={`form-group ${field.error ? 'has-error': ''}`}>
+    <label>{field.label}</label>
     <div>
-      <input className="form-control" {...input} placeholder={label} type={type} />
-      {touched && error && <label className="control-label">{error}</label>}
+      <input className="form-control" {...field.bind({ type, placeholder }) } />
+      {field.error && <label className="control-label">{field.error}</label>}
     </div>
   </div>
-)
+))
 
 export default InputField;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
 import { Grid, Row, Col, ButtonToolbar, Button, ButtonGroup } from 'react-bootstrap';
 
 import InputField from '../../common/forms/InputField';
@@ -13,6 +13,7 @@ import { required, email } from '../../../utils/validation';
 
 import './ProfileForm.scss';
 
+@observer
 class ProfileForm extends Component {
   static propTypes = {
     roles: PropTypes.array,
@@ -27,84 +28,57 @@ class ProfileForm extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, reset, submitting, roles, avatar, errorMessage } = this.props;
+    const { form } = this.props;
 
     return (
       <Grid>
-        <form className="add-profile-form" onSubmit={handleSubmit}>
+        <form className="add-profile-form" onSubmit={form.onSubmit}>
           <Row>
             <Col xs={6}>
-              <Field
-                component={InputField}
-                name="name.first"
-                type="text"
-                label="First Name"
-                validate={required} />
+              <InputField field={form.$('name').$('first')} />
             </Col>
             <Col xs={6}>
-              <Field
-                name="name.last"
-                component={InputField}
-                type="text"
-                label="Last Name"
-                validate={required} />
+              <InputField field={form.$('name').$('last')} />
             </Col>
           </Row>
           <Row>
             <Col xs={6}>
-              <Field
-                className="form-control"
-                name="title"
-                component={InputField}
-                type="text"
-                label="Title"
-                validate={required} />
+            <InputField field={form.$('title')} />
             </Col>
             <Col xs={6}>
-              <Field
-                className="form-control"
-                name="email"
-                component={InputField}
-                type="email"
-                label="Email"
-                validate={[required, email]} />
+              <InputField type="email" field={form.$('email')} />
             </Col>
           </Row>
           <Row>
             <Col xs={6}>
-              <Field component={RadioGroup} name="gender" label="Gender" validate={required} options={[
+              {/* <Field component={RadioGroup} name="gender" label="Gender" validate={required} options={[
                   { title: 'Male', value: 'male' },
                   { title: 'Female', value: 'female' }
-              ]} />
+              ]} /> */}
             </Col>
             <Col xs={6}>
-              <Field component={ImageField} name="picture.large" label="Select avatar" />
-              {!!avatar && <ImagePreview src={avatar} />}
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={6}>
-              <Field
-                className="form-control"
-                name="phone"
-                component={InputField}
-                type="text"
-                label="Phone" />
+              <ImageField field={form.$('picture').$('large')} />
+              {/* {!!avatar && <ImagePreview src={avatar} />} */}
             </Col>
           </Row>
           <Row>
             <Col xs={6}>
-              <Field name="roles" multiple options={roles} component={SelectObject} type="select-multiple" label="Chose role" />
+              <InputField field={form.$('phone')} />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={6}>
+              {/* <Field name="roles" multiple options={roles} component={SelectObject} type="select-multiple" label="Chose role" /> */}
             </Col>
           </Row>
           <Row>
             <Col xs={6}>
               <ButtonToolbar>
                 <ButtonGroup>
-                  <Button type="submit" disabled={pristine || submitting} bsStyle="success">Success</Button>
-                  <Button disabled={pristine || submitting} onClick={reset}>Reset</Button>
+                  <Button type="submit" bsStyle="success">Success</Button>
+                  <Button onClick={form.onReset}>Reset</Button>
                 </ButtonGroup>
-                {errorMessage && <span className="bg-danger">{errorMessage}</span>}
+                {/* {errorMessage && <span className="bg-danger">{errorMessage}</span>} */}
               </ButtonToolbar>
             </Col>
           </Row>
