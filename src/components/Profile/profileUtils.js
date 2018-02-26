@@ -13,9 +13,9 @@ export const buildQueryOptions = (options) => {
     }
 
     return acc;
-  }, '?');
+  }, '');
 
-  return queryOptions;
+  return queryOptions ? `?${queryOptions}` : queryOptions;
 }
 
 export const formatSorting = (sorting) => {
