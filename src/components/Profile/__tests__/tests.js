@@ -39,7 +39,6 @@ describe('testing profile utils', () => {
     expect(expectQuery).toEqual('?_limit=10&_page=1');
   });
 
-
   test('should return empty string', () => {
     const options = {
       limit: undefined,

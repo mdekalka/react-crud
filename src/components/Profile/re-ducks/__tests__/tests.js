@@ -174,7 +174,102 @@ describe('testing profile reducer', () => {
     const action = createActionObject(profileTypes.FETCHING_PROFILE_START);
 
     expect(profileReducer(initialState, action)).toEqual(expectState);
-  })
+  });
+
+  test('should handle fetching profile success', () => {
+    const profile = {
+      id: 1,
+      name: 'Test name'
+    };
+    const expectState = {
+      ...initialState,
+      currentProfile: profile,
+      isFetching: false,
+      errorMessage: ''
+    };
+
+    const action = createActionObject(profileTypes.FETCHING_PROFILE_SUCCESS, { profile });
+
+    expect(profileReducer(initialState, action)).toEqual(expectState);
+  });
+
+  test('should handle fetching profiles success', () => {
+    const data = [{
+      id: 1,
+      name: 'Test name'
+    },
+    {
+      id: 2,
+      name: 'Test name 2'
+    }];
+    const total = data.length;
+    const expectState = {
+      ...initialState,
+      data,
+      total,
+      isFetching: false,
+      errorMessage: ''
+    };
+
+    const action = createActionObject(profileTypes.FETCHING_PROFILES_SUCCESS, { data, total });
+
+    expect(profileReducer(initialState, action)).toEqual(expectState);
+  });
+
+  test('should handle adding profile success', () => {
+    const expectState = {
+      ...initialState,
+      isFetching: false,
+      errorMessage: ''
+    };
+
+    const action = createActionObject(profileTypes.ADD_PROFILE_SUCCESS);
+
+    expect(profileReducer(initialState, action)).toEqual(expectState);
+  });
+
+  test('should handle updating profile success', () => {
+    const profile = {
+      id: 1,
+      name: 'Test name'
+    };
+    const expectState = {
+      ...initialState,
+      isFetching: false,
+      errorMessage: '',
+      currentProfile: profile
+    };
+
+    const action = createActionObject(profileTypes.UPDATE_PROFILE_SUCCESS, { data: profile });
+
+    expect(profileReducer(initialState, action)).toEqual(expectState);
+  });
+
+  test('should handle removing profile success', () => {
+    const existingProfiles = [{
+      id: 1,
+      name: 'Test name'
+    },
+    {
+      id: 2,
+      name: 'Test name 2'
+    },
+    {
+      id: 3,
+      name: 'Test name 3'
+    }];
+    const expectState = {
+      ...initialState,
+      isFetching: false,
+      errorMessage: '',
+      data: [ existingProfiles[0], existingProfiles[1] ]
+    };
+    const removeId = 3;
+
+    const action = createActionObject(profileTypes.REMOVE_PROFILE_SUCCESS, { id: removeId });
+
+    expect(profileReducer({...initialState, data: existingProfiles}, action)).toEqual(expectState);
+  });
 
   test('should handle failed actions', () => {
     const expectState = {
